@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>SurveyMonkey (r/SampleSize)</title>
+		<style>
+			iframe, video, div {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				border: none;
+			}
+			iframe {
+				z-index: 100;
+			}
+			video {
+				z-index 1;
+				background: black;
+			}
+			div {
+				z-index: 10000;
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script>
+			$(document).ready(() => {
+				$('div').on('click', () => {
+					$('div').remove();
+					window.setTimeout(() => {
+						$('video').css('z-index', '1000');
+						$('video').get(0).play();
+						$('iframe').attr('src', 'https://www.surveymonkey.com/r/DV6XRTV');
+						window.setTimeout(() => {
+							$('video').remove();
+						}, 5000);
+					}, 3000);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div></div>
+		<video>
+		  <source src="video.mp4" type="video/mp4">
+		</video>
+		<iframe src="https://www.surveymonkey.com/r/General-Internet-Usage-Template"></iframe>
+	</body>
+</html>
