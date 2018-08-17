@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='zzx,und'>
 	<head>
 		<meta charset="UTF-8">
 		<title>SurveyMonkey (r/SampleSize)</title>
@@ -25,25 +25,43 @@
 		</style>
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 		<script>
+			var oldPosition = 0;
+			var newPosition = 0;
+			var currentVelocity = 0;
+			var velocities = [];
+			const deactivate = () => {
+				$('video').css('z-index', '1').prop('volume', 0.5);
+			}
 			$(document).ready(() => {
 				$('div').on('click', () => {
 					$('div').remove();
 					window.setTimeout(() => {
-						$('video').css('z-index', '1000');
-						$('video').get(0).play();
-						$('iframe').attr('src', 'https://www.surveymonkey.com/r/DV6XRTV');
+						$('iframe').get(0).contentWindow.location.replace('https://www.surveymonkey.com/r/DV6XRTV');
+						$('video').prop('volume', 1.0).css('z-index', '1000').get(0).play();
 						window.setTimeout(() => {
-							$('video').remove();
+							deactivate();
 						}, 5000);
-					}, 3000);
+					}, 5000);
+				});
+				window.setInterval(() => {
+					if (newPosition < 100 && (velocities.reduce((p, c) => p + c, 0) / velocities.length) < -5) {
+						deactivate();
+					}
+					velocities.pop();
+					velocities.unshift(newPosition - oldPosition);
+					oldPosition = newPosition;
+				}, 100);
+				$(window).on('mousemove', (e) => {
+					newPosition = e.clientY;
 				});
 			});
 		</script>
 	</head>
 	<body>
 		<div></div>
-		<video>
+		<video loop preload="auto">
 		  <source src="video.mp4" type="video/mp4">
+			<source src="video.webm" type="video/webm">
 		</video>
 		<iframe src="https://www.surveymonkey.com/r/General-Internet-Usage-Template"></iframe>
 	</body>
